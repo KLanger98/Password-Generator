@@ -1,24 +1,27 @@
-// Assignment code here
-
-
-// Get references to the #generate element
+// Assignment Code
 var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
-  details.promptRequirements();
+  if(details.characterList === null){
+    details.promptRequirements();
+  } else{
+    if(window.confirm("Would you like to use the same parameters as previously?")){
+      for(let k = 0; k < details.characterList.length; k++){
+        details.characterList[k][1] = false;
+      }
+      generatePassword()
+    } else{
+      details.promptRequirements();
+    }
+  }
+  
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
 
 }
-
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
-
-
-
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
@@ -30,7 +33,7 @@ var details = {
   uppercase: null,
   numeric: null,
   special: null,
-  characterList: [],
+  characterList: null,
   promptRequirements: function(){
     //Prompt for password length
     this.characterList = []
@@ -70,10 +73,9 @@ var details = {
         alert('You must select allow at least one set of characters');
         this.promptRequirements();
       }
-
-  
   }
 }
+
 
 //Create generatePassword() which generates the password randomly based on the users preferred characters and password length
 function generatePassword(){
@@ -89,7 +91,13 @@ function generatePassword(){
   //Ensure all selected character categories have been utilised via true statements
   for(let j = 0; j < details.characterList.length; j++){
     if(details.characterList[j][1] === false){
+      console.log(newPassword)
       console.log('Password did not include all selected categories, regenerating')
+      //Reset markers
+      for(let k = 0; k < details.characterList.length; k++){
+        details.characterList[k][1] = false;
+      }
+      //Regenerate password using same parameters
       generatePassword()
     }
     details.characterList[j][1] = null;
