@@ -82,7 +82,6 @@ function generatePassword(){
   //Ensure all selected character categories have been utilised via true statements
   for(let j = 0; j < details.characterList.length; j++){
     if(details.characterList[j][1] === false){
-      console.log(newPassword)
       console.log('Password did not include all selected categories, regenerating')
       //Reset markers
       for(let k = 0; k < details.characterList.length; k++){
