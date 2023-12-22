@@ -3,6 +3,7 @@ var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
+  //Check if parameters have been provided previously
   if(details.characterList === null){
     details.promptRequirements();
   } else{
@@ -29,50 +30,40 @@ generateBtn.addEventListener("click", writePassword);
 //Use an object to store password preferences and methods of resetting password
 var details = {
   lengthPrompt: 0,
-  lowercase: null,
-  uppercase: null,
-  numeric: null,
-  special: null,
   characterList: null,
   promptRequirements: function(){
+    //Use counter to ensure at least one prompt is selected
+    let counter = 0;
     //Prompt for password length
     this.characterList = []
-      this.lengthPrompt = prompt("How long would you like your password to be? *Password can only be between 8 and 128 characters long*")
-
-      while(this.lengthPrompt < 8 || this.lengthPrompt > 128){
-        this.lengthPrompt = prompt("Password must be between 8 and 128 characters in length")
-      }
+    this.lengthPrompt = prompt("How long would you like your password to be? *Password can only be between 8 and 128 characters long*")
+    //Ensure password length has be provided between ranges
+    while(this.lengthPrompt < 8 || this.lengthPrompt > 128){
+      this.lengthPrompt = prompt("Password must be between 8 and 128 characters in length")
+    }
     //Prompt character choices
-      if(window.confirm("Would you like your password to have lowercase characters?")){
-        this.lowercase = true;
-        //Push an array containing all lowercase characters + a marker boolean value to indicate whether or not a generated password conta
-        this.characterList.push(['abcdefghijklmnopqrstuvwxyz', false]);
-      } else{
-        this.lowercase = false;
-      }
-      if(window.confirm("Would you like your password to have Uppercase characters?")){
-        this.uppercase = true;
-        this.characterList.push(['ABCDEFGHIJKLMNOPQRSTUVWXYZ', false])
-      } else{
-        this.uppercase = false;
-      }
-      if(window.confirm("Would you like your password to have numeric characters?")){
-        this.numeric = true;
-        this.characterList.push(['0123456789', false])
-      } else{
-        this.numeric = false;
-      }
-      if(window.confirm("Would you like your password to have special characters?")){
-        this.special = true;
-        this.characterList.push(["!#$%&'()*+,-./:;<=>?@[\]^_`{|}~", false])
-      } else{
-        this.special = false;
-      }
-      //Check at least one character set has been selected 
-      if(this.characterList == []){
-        alert('You must select allow at least one set of characters');
-        this.promptRequirements();
-      }
+    if(window.confirm("Would you like your password to have lowercase characters?")){
+      //Push an array containing all lowercase characters + a marker boolean value to be changed once a character is used from this character list
+      this.characterList.push(['abcdefghijklmnopqrstuvwxyz', false]);
+      counter++
+    } 
+    if(window.confirm("Would you like your password to have Uppercase characters?")){
+      this.characterList.push(['ABCDEFGHIJKLMNOPQRSTUVWXYZ', false]);
+      counter++
+    } 
+    if(window.confirm("Would you like your password to have numeric characters?")){
+      this.characterList.push(['0123456789', false]);
+      counter++
+    } 
+    if(window.confirm("Would you like your password to have special characters?")){
+      this.characterList.push(["!#$%&'()*+,-./:;<=>?@[\]^_`{|}~", false]);
+      counter++
+    } 
+    //Check at least one character set has been selected 
+    if(counter < 1){
+      alert('You must select allow at least one set of characters');
+      this.promptRequirements();
+    }
   }
 }
 
